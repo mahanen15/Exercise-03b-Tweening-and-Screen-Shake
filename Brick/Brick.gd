@@ -30,7 +30,7 @@ func _ready():
 		$ColorRect.color = Color8(134,142,150)
 
 func _physics_process(_delta):
-	if dying and not $Confetti.emitting:
+	if dying and not $Confetti.emitting and not $Tween.is_active():
 		queue_free()
 
 func hit(_ball):
@@ -43,3 +43,9 @@ func die():
 	Global.update_score(score)
 	get_parent().check_level()
 	$Confetti.emitting = true
+	$Tween.interpolate_property(self, "position", position, Vector2(position.x, 1000), time_fall, Tween.TRANS_EXPO, Tween.EASE_IN)
+	$Tween.interpolate_property(self, "rotation", rotation, -PI + randf()*2*PI, time_rotate, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+	$Tween.interpolate_property($ColorRect, "color:a", $ColorRect.color.a, 0, time_a, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	$Tween.interpolate_property($ColorRect, "color:s", $ColorRect.color.s, 0, time_s, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	$Tween.interpolate_property($ColorRect, "color:v", $ColorRect.color.v, 0, time_v, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	$Tween.start()
